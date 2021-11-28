@@ -60,9 +60,20 @@ const Home = () => {
                 animate="ani"
                 style={{background: "#151515", fontSize: "15px", fontWeight: "bolder"}}
             >
-                <motion.p variants={appear} style={{color: "#FFB319"}}>Crypto<span style={font}>Charity</span></motion.p>
-                <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/donate">Donate</Link></motion.p>
-                <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/about">About us</Link></motion.p>
+                <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/home/charity">Charity</Link></motion.p>
+                <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/home/donate">Donate</Link></motion.p>
+                { 
+                    JSON.parse(localStorage.getItem("user")).use ?
+                    <></>
+                    :
+                    <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/home/auth">SignIn/SignUp</Link></motion.p>
+                }
+                {
+                    JSON.parse(localStorage.getItem("user")).use ? 
+                    <motion.p variants={appear}><Link style={{textDecoration: "none", color: "#EEEEEE"}} to="/home/dashboard">Dashboard</Link></motion.p>
+                    :
+                    <></>
+                }
             </Navbar>
             <Head variants={color} initial="ini" animate="ani">Crypto<span style={font}>Charity</span></Head>
             <Line />
@@ -70,6 +81,7 @@ const Home = () => {
                 <img src="/1.jpg" alt="quote" />
             </Sec>
             <Values />
+            <Line />
             <Blank />
         </Container>
     )

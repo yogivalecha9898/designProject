@@ -1,41 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Values = () => {
 
-    const[arr] = useState([
-        {
-            "head": "Direct Impact",
-            "short": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. "
-        },
-        {
-            "head": "Direct Impact",
-            "short": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. "
-        },
-        {
-            "head": "Direct Impact",
-            "short": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. "
+    const[arr, setArray] = useState([])
+    let flag = 1
+    
+    useEffect(() => {
+        const fun = async () => {
+            const fet = await fetch("http://localhost:3001/user/transaction")
+            const data = await fet.json()
+            setArray(data)
         }
-    ])
+        fun()
+    }, [])
 
     return (
         <Value style={{background: "#FDFAF6"}}>
-            <div style={{width: "100%", height: "25%", display: "flex", alignItems: "center", justifyContent: "center"}}><h1>Our Values</h1></div>
-            <div style={{width: "100%", height: "75%", display: "flex"}}>
-                {arr.map((obj) => {
-                    return <Comp heading={obj.head} para={obj.short} />
-                })}
-            </div>  
+            <h1 style={{marginTop: "30px"}}>Contributors</h1>
+            <Line />
+            {arr.map(options => {
+                return (
+                    <div style={{background: flag === 1 ? "lightgray":"whitesmoke"}} className="table">
+                        <div style={{display: "none"}}>{flag ^= 1}</div>
+                        <h2><span style={{color: "gray"}}>To:</span> {options.to}</h2>
+                        <h2><span style={{color: "gray"}}>From:</span> {options.from}</h2>
+                        <h2><span style={{color: "gray"}}>Amount:</span> {options.amount}</h2>
+                    </div>
+                )
+            })}
         </Value>
-    )
-}
-
-const Comp = ({ heading, para }) => {
-    return (
-        <div style={{textAlign: "center", padding: "0 20px 0 20px", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-around"}}>
-            <h1>{heading}</h1>
-            <p>{para}</p>
-        </div>
     )
 }
 
@@ -44,8 +38,25 @@ export default Values
 const Value = styled.div`
     // border: 1px solid black;
     width: 100%;
-    height: 600px;
-    margin: 0 auto;
+    margin: 0 auto 30px;
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & .table {
+        width: 80%;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        & h2 {
+            width: 33%
+        }
+    }
+`
+
+const Line = styled.hr`
+    width: 15%;
+    margin: 30px auto;
+    border: none;
+    border-top: 3px solid #DEDEDE
 `
